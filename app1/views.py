@@ -150,7 +150,8 @@ def send_mail_after_registration(email, token):
     Sends an email to the user with an account verification link.
     """
     subject = 'Your Account needs to be verified'
-    message = f'Hi, click on the link to verify your account: http://127.0.0.1:8000/verify/{token}'
+    # message = f'Hi, click on the link to verify your account: http://127.0.0.1:8000/verify/{token}'
+    message = f'Hi, click on the link to verify your account: https://crud-with-auth.onrender.com/verify/{token}'
     email_from = settings.EMAIL_HOST_USER
     recipient_list = [email]
     send_mail(subject, message, email_from, recipient_list)
@@ -245,7 +246,8 @@ def send_forgot_mail(email, token):
     Sends an email with a link for password reset.
     """
     subject = 'Your forget password link'
-    message = f'Hi, click on the link to reset your password: http://127.0.0.1:8000/change_password/{token}'
+    # message = f'Hi, click on the link to reset your password: http://127.0.0.1:8000/change_password/{token}'
+    message = f'Hi, click on the link to reset your password: https://crud-with-auth.onrender.com/change_password/{token}'
     email_from = settings.EMAIL_HOST_USER
     recipient_list = [email]
     send_mail(subject, message, email_from, recipient_list)
