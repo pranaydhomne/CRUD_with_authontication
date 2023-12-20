@@ -1,0 +1,114 @@
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}create food{% endblock title %}
+{% block main %}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha384-dsZNfEXC7OBB3fPFCs/gG52r3v9WvC/gG7bR4MYmT6w5z5s/2+yv7gZYdIl+pxC" crossorigin="anonymous">
+
+<style>
+    .navbar-text strong {
+      font-weight: bold;
+    }
+  </style>
+  
+  <nav class="navbar navbar-light bg-light">
+    <span class="navbar-text">
+      Welcome <strong>{{ request.user.username }}</strong>
+    </span>
+  </nav>
+
+
+
+
+    <div class="container">
+
+        <h1>Create Food Recipe</h1>
+
+    <form method="post" action="/" enctype="multipart/form-data" class="border p-3 rounded shadow-sm">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label for="food_name">Name:</label>
+            <input type="text" class="form-control" id="food_name" name="food_name" >
+        </div>
+
+        <div class="form-group">
+            <label for="food_description">Description:</label>
+            <textarea class="form-control" id="food_description" name="food_description" ></textarea>
+        </div>
+
+        <div class="form-group ">
+            <label for="food_image" >Image:</label>
+            <input type="file" class="form-control-file mt-2" id="food_image" name="food_image">
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-2">Create Recipe</button>
+    </form> 
+    <hr>
+    <hr>
+    <hr>
+ 
+
+        <table class="table" class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">NO</th>
+                    <th scope="col">food_name</th>
+                    <th scope="col">food_description</th>
+                    <th scope="col">food_image</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for food in food_recipes %}
+                    <tr>
+                        <th scope="row">{{forloop.counter}}</th>
+                        <td>{{food.food_name}}</td>
+                        <td>{{food.food_description}}</td>
+                        <td>
+                            <img src="/media/{{food.food_image}}" alt="" height="100px" width="100px" class="bootstrap">
+                        </td>
+                        <td>
+                            <a class="btn btn-success m-2"  href="update_recipe/{{food.id}}/">
+                                Update 
+                            </a>
+
+                            <a class="btn btn-danger delete-btn" href="delete_recipe/{{food.id}}/" data-id="{{ food.id }}">
+                                Delete
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+           
+                
+            </tbody>
+        </table>
+    </div>
+    
+    {% endblock  %}
+
+    <script>
+        $(document).ready(function() {
+            $('.delete-btn').on('click', function(e) {
+                e.preventDefault(); // Prevent the default behavior of the anchor tag
+    
+                var deleteUrl = 'delete_recipe/' + $(this).data('id') + '/';
+                
+                // Perform the deletion asynchronously (e.g., using AJAX)
+                $.ajax({
+                    url: deleteUrl,
+                    type: 'GET', // or 'POST' depending on your view
+                    success: function(data) {
+                        // Handle success, for example, remove the deleted row from the table
+                        $(e.target).closest('tr').remove();
+                    },
+                    error: function(xhr, textStatus, errorThrown) {
+                        // Handle error
+                        console.error('Error deleting recipe:', errorThrown);
+                    }
+                });
+            });
+        });
+    </script>

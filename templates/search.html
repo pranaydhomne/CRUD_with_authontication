@@ -1,0 +1,47 @@
+
+{% extends 'base.html' %}
+{% block title %}search Reasult{% endblock title %}
+{% load static %}
+{% block main %}
+
+
+
+    <h1>Search Result For  {{request.GET.search}}</h1>
+    
+        <a href="{% url 'food' %}"><button type="button" class="btn btn-primary"> Create Food Recipe </button></a>
+   
+    <table class="table" class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">NO</th>
+                <th scope="col">food_name</th>
+                <th scope="col">food_description</th>
+                <th scope="col">food_image</th>
+                {% comment %} <th scope="col">Action</th> {% endcomment %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for food in query_result %}
+                <tr>
+                    <th scope="row">{{forloop.counter}}</th>
+                    <td>{{food.food_name}}</td>
+                    <td>{{food.food_description}}</td>
+                    <td>
+                        <img src="/media/{{food.food_image}}" alt="" height="100px" width="100px" class="bootstrap">
+                    </td>
+                    {% comment %} <td>
+                        <a class="btn btn-success m-2"  href="update_recipe/{{food.id}}/">
+                            Update 
+                        </a>
+                        <a class="btn btn-danger"  href="delete_recipe/{{food.id}}/">
+                            Delete
+                        </a>
+                    </td> {% endcomment %}
+                </tr>
+            {% endfor %}
+       
+            
+        </tbody>
+    </table> 
+    
+{% endblock main %}
